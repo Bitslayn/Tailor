@@ -29,16 +29,16 @@ function api:newGarment(name, parts)
 end
 
 ---@param texture Texture
----@param u integer?
----@param v integer?
 ---@param x integer?
 ---@param y integer?
+---@param u integer?
+---@param v integer?
 ---@param matrix Matrix4?
 ---@param alpha boolean?
 ---@return self
 ---@nodiscard
-function class:addLayer(texture, u, v, x, y, matrix, alpha)
-	table.insert(self.layers, { texture = texture, tint = u and { uv = vectors.vec4(u, v, x, y), matrix = matrix, alpha = alpha } })
+function class:addLayer(texture, x, y, u, v, matrix, alpha)
+	table.insert(self.layers, { texture = texture, tint = x and { uv = vectors.vec4(x, y, u, v), matrix = matrix, alpha = alpha } })
 	return self
 end
 
