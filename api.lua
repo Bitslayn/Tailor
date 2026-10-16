@@ -40,6 +40,21 @@ function class:addLayer(texture, x, y, u, v, matrix)
 	return self
 end
 
+---Given the name of the garment worn above this garment, mask out this part of the texture.
+---@param name string
+---@param x integer
+---@param y integer
+---@param u integer
+---@param v integer
+---@return self
+function class:addMask(name, x, y, u, v)
+	if not self.masks[name] then
+		self.masks[name] = {}
+	end
+	self.masks[name][#self.masks[name] + 1] = vectors.vec4(x, y, u, v)
+	return self
+end
+
 ---@param color Vector3|Vector4
 ---@return self
 function class:setColor(color)
@@ -47,9 +62,34 @@ function class:setColor(color)
 	return self
 end
 
+---@param wearing FOXClothes.Garment[]
+---@param index integer
 ---@return self
-function class:apply()
+function class:apply(wearing, index)
+	---@type Vector4[]
+	local mask_queue = {}
+
+	-- Queue masks
+	for i = 1, index - 1 do
+		if self.masks[wearing[i].name] then
+			for _, mask in ipairs(self.masks[wearing[i].name]) do
+				mask_queue[#mask_queue + 1] = mask
+			end
+		end
+	end
+
+	-- Apply textures
 	for i = 1, #self.layers do
+		local texture = self.layers[i].texture
+		texture:restore()
+		
+		-- Apply masks
+		for j = 1, #mask_queue do
+			local x, y, u, v = mask_queue[j]:unpack()
+			texture:fill(x, y, u, v, 0, 0, 0, 0)
+		end
+		
+		-- Apply tint
 		local tint = self.layers[i].tint
 		if tint then
 			local mat = matrices.scale4(self.color.rgb --[[@as Vector3]])
@@ -58,9 +98,12 @@ function class:apply()
 
 			local x, y, u, v = tint.uv:unpack()
 
-			self.layers[i].texture:restore():applyMatrix(x, y, u, v, mat, true):update()
+			texture:applyMatrix(x, y, u, v, mat, true)
 		end
+
+		texture:update()
 	end
+
 	return self
 end
 
