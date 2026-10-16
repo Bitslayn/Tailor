@@ -16,7 +16,6 @@ class.__index = class
 ---@class FOXClothes.Garment.Tint
 ---@field uv Vector4
 ---@field matrix Matrix4
----@field alpha boolean?
 
 ---@class FOXClothes.Garment.Mask
 
@@ -34,11 +33,10 @@ end
 ---@param u integer?
 ---@param v integer?
 ---@param matrix Matrix4?
----@param alpha boolean?
 ---@return self
 ---@nodiscard
-function class:addLayer(texture, x, y, u, v, matrix, alpha)
-	table.insert(self.layers, { texture = texture, tint = x and { uv = vectors.vec4(x, y, u, v), matrix = matrix or matrices.mat4(), alpha = alpha } })
+function class:addLayer(texture, x, y, u, v, matrix)
+	table.insert(self.layers, { texture = texture, tint = x and { uv = vectors.vec4(x, y, u, v), matrix = matrix or matrices.mat4() } })
 	return self
 end
 
