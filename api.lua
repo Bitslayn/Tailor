@@ -11,6 +11,7 @@ class.__index = class
 
 ---@class FOXClothes.Garment.Layer
 ---@field texture Texture
+---@field color Vector3|Vector4?
 ---@field tint FOXClothes.Garment.Tint?
 
 ---@class FOXClothes.Garment.Tint
@@ -34,7 +35,6 @@ end
 ---@param v integer?
 ---@param matrix Matrix4?
 ---@return self
----@nodiscard
 function class:addLayer(texture, x, y, u, v, matrix)
 	table.insert(self.layers, { texture = texture, tint = x and { uv = vectors.vec4(x, y, u, v), matrix = matrix or matrices.mat4() } })
 	return self
@@ -42,19 +42,23 @@ end
 
 ---@param color Vector3|Vector4
 ---@return self
----@nodiscard
 function class:setColor(color)
+	self.color = color
+	return self
+end
+
+---@return self
+function class:apply()
 	for i = 1, #self.layers do
 		local tint = self.layers[i].tint
 		if tint then
-			-- TODO Test alpha support, it should act on the color rather than the texture if alpha is set to false. Probably should also make this more intuitive
-			local mat = matrices.scale4(color.rgb --[[@as Vector3]])
-			mat.v44 = color.a --[[@as number?]] or 1
+			local mat = matrices.scale4(self.color.rgb --[[@as Vector3]])
+			mat.v44 = self.color.a --[[@as number?]] or 1
 			mat = mat * tint.matrix
 
 			local x, y, u, v = tint.uv:unpack()
 
-			self.layers[i].texture:applyMatrix(x, y, u, v, mat, true):update()
+			self.layers[i].texture:restore():applyMatrix(x, y, u, v, mat, true):update()
 		end
 	end
 	return self
