@@ -16,4 +16,11 @@ function class:addCollection(name, parts)
 	return self
 end
 
+---@param outfit FOXClothes.Outfit
+---@return self
+function class:applyOutfit(outfit)
+	-- TODO
+	return self
+end
+
 return newMannequin
