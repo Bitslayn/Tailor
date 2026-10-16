@@ -1,6 +1,3 @@
----@class FOXClothes
-local api = {}
-
 ---@class FOXClothes.Garment
 ---@field name string
 ---@field parts ModelPart[]
@@ -24,7 +21,7 @@ class.__index = class
 ---@param parts ModelPart[]
 ---@return FOXClothes.Garment
 ---@nodiscard
-function api:newGarment(name, parts)
+local function newGarment(name, parts)
 	return setmetatable({ name = name, parts = parts, layers = {}, masks = {} }, class)
 end
 
@@ -82,13 +79,13 @@ function class:apply(wearing, index)
 	for i = 1, #self.layers do
 		local texture = self.layers[i].texture
 		texture:restore()
-		
+
 		-- Apply masks
 		for j = 1, #mask_queue do
 			local x, y, u, v = mask_queue[j]:unpack()
 			texture:fill(x, y, u, v, 0, 0, 0, 0)
 		end
-		
+
 		-- Apply tint
 		local tint = self.layers[i].tint
 		if tint then
@@ -107,4 +104,4 @@ function class:apply(wearing, index)
 	return self
 end
 
-return api
+return newGarment
