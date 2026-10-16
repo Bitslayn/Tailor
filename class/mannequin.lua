@@ -1,7 +1,11 @@
 ---@class FOXClothes.Mannequin
----@field collections table<string, ModelPart[]>
+---@field collections table<string, FOXClothes.Mannequin.Collections>
 local class = {}
 class.__index = class
+
+---@class FOXClothes.Mannequin.Collections
+---@field parts ModelPart[]
+---@field offset integer
 
 ---@nodiscard
 local function newMannequin()
@@ -10,9 +14,10 @@ end
 
 ---@param name string
 ---@param parts ModelPart[]
+---@param layer_offset integer?
 ---@return self
-function class:addCollection(name, parts)
-	self.collections[name] = parts
+function class:addCollection(name, parts, layer_offset)
+	self.collections[name] = { parts = parts, offset = layer_offset or 1 }
 	return self
 end
 
@@ -21,19 +26,24 @@ end
 function class:applyOutfit(outfit)
 	require("scripts/libraries/PartLayers")
 
-	for _, parts in pairs(self.collections) do
-		for i = 1, #parts do
-			parts[i]:initializeLayers():renderTypeLayer(2, "TRANSLUCENT")
+	-- TODO fix layering issues and variable naming
+
+	for _, collection in pairs(self.collections) do
+		for i = 1, #collection.parts do
+			collection.parts[i]:initializeLayers():renderTypeLayer(2, "TRANSLUCENT")
 		end
 	end
 
-	local layer = 3
+	local layers = {}
+
 	for i = #outfit.garments, 1, -1 do
 		for j = 1, #outfit.garments[i].layers do
-			for _, part in pairs(self.collections[outfit.garments[i].collection]) do
-				part:setTextureLayer(layer, "CUSTOM", outfit.garments[i].layers[j].texture)
+			local collection = outfit.garments[i].collection
+			layers[collection] = (layers[collection] or self.collections[collection].offset) + 1
+
+			for _, part in pairs(self.collections[collection].parts) do
+				part:setTextureLayer(layers[collection], "CUSTOM", outfit.garments[i].layers[j].texture)
 			end
-			layer = layer + 1
 		end
 		outfit.garments[i]:apply(outfit.garments, i)
 	end
