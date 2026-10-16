@@ -42,4 +42,22 @@ function class:addLayer(texture, x, y, u, v, matrix, alpha)
 	return self
 end
 
+---@param color Vector3|Vector4
+---@return self
+---@nodiscard
+function class:setColor(color)
+	for i = 1, #self.layers do
+		local tint = self.layers[i].tint
+		if tint then
+			local mat = matrices.scale4(color.rgb --[[@as Vector3]])
+			mat.v44 = color.a --[[@as number?]] or 1
+
+			local x, y, u, v = tint.uv:unpack()
+
+			self.layers[i].texture:applyMatrix(x, y, u, v, mat, true):update()
+		end
+	end
+	return self
+end
+
 return api
