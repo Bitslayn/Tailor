@@ -25,8 +25,6 @@ end
 ---@param outfit FOXTailor.Outfit
 ---@return self
 function class:applyOutfit(outfit)
-	require("scripts/libraries/PartLayers")
-
 	-- TODO fix variable naming
 
 	local layers = {}
