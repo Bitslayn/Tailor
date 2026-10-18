@@ -15,6 +15,8 @@ class.__index = class
 ---@field uv Vector4
 ---@field matrix Matrix4
 
+---@alias FOXClothes.Outfit FOXClothes.Garment[]
+
 ---@class FOXClothes.Garment.Mask
 
 ---@param name string

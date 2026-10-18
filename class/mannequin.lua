@@ -39,17 +39,17 @@ function class:applyOutfit(outfit)
 		end
 	end
 
-	for i = #outfit.garments, 1, -1 do
-		for j = 1, #outfit.garments[i].layers do
-			local collection = outfit.garments[i].collection
+	for i = #outfit, 1, -1 do
+		for j = 1, #outfit[i].layers do
+			local collection = outfit[i].collection
 
 			for _, part in pairs(self.collections[collection].parts) do
-				part:setTextureLayer(layers[collection], "CUSTOM", outfit.garments[i].layers[j].texture)
+				part:setTextureLayer(layers[collection], "CUSTOM", outfit[i].layers[j].texture)
 			end
 
 			layers[collection] = layers[collection] + 1
 		end
-		outfit.garments[i]:apply(outfit.garments, i)
+		outfit[i]:apply(outfit, i)
 	end
 
 	return self
