@@ -1,27 +1,27 @@
----@class FOXClothes.Garment
+---@class FOXTailor.Garment
 ---@field name string
 ---@field collection string
----@field layers FOXClothes.Garment.Layer[]
----@field masks FOXClothes.Garment.Mask[]
+---@field layers FOXTailor.Garment.Layer[]
+---@field masks FOXTailor.Garment.Mask[]
 local class = {}
 class.__index = class
 
----@class FOXClothes.Garment.Layer
+---@class FOXTailor.Garment.Layer
 ---@field texture Texture
 ---@field color Vector3|Vector4?
----@field tint FOXClothes.Garment.Tint?
+---@field tint FOXTailor.Garment.Tint?
 
----@class FOXClothes.Garment.Tint
+---@class FOXTailor.Garment.Tint
 ---@field uv Vector4
 ---@field matrix Matrix4
 
----@alias FOXClothes.Outfit FOXClothes.Garment[]
+---@alias FOXTailor.Outfit FOXTailor.Garment[]
 
----@class FOXClothes.Garment.Mask
+---@class FOXTailor.Garment.Mask
 
 ---@param name string
 ---@param collection string
----@return FOXClothes.Garment
+---@return FOXTailor.Garment
 ---@nodiscard
 local function newGarment(name, collection)
 	return setmetatable({ name = name, collection = collection, layers = {}, masks = {} }, class)
@@ -61,7 +61,7 @@ function class:setColor(color)
 	return self
 end
 
----@param wearing FOXClothes.Garment[]
+---@param wearing FOXTailor.Garment[]
 ---@param index integer
 ---@return self
 function class:apply(wearing, index)

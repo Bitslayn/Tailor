@@ -1,4 +1,4 @@
----@class FOXClothes
+---@class FOXTailor
 local api = {}
 
 api.newGarment = require("./class/garment")

@@ -1,9 +1,9 @@
----@class FOXClothes.Mannequin
----@field collections table<string, FOXClothes.Mannequin.Collections>
+---@class FOXTailor.Mannequin
+---@field collections table<string, FOXTailor.Mannequin.Collections>
 local class = {}
 class.__index = class
 
----@class FOXClothes.Mannequin.Collections
+---@class FOXTailor.Mannequin.Collections
 ---@field name string
 ---@field parts table<any, ModelPart>
 ---@field offset integer
@@ -22,7 +22,7 @@ function class:addCollection(name, parts, layer_offset)
 	return self
 end
 
----@param outfit FOXClothes.Outfit
+---@param outfit FOXTailor.Outfit
 ---@return self
 function class:applyOutfit(outfit)
 	require("scripts/libraries/PartLayers")
