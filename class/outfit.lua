@@ -4,6 +4,7 @@ local class = {}
 class.__index = class
 
 ---@param garments FOXTailor.Garment[]
+---@return FOXTailor.Outfit
 ---@nodiscard
 local function newOutfit(garments)
 	return setmetatable({ garments = garments }, class)

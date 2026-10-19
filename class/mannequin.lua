@@ -8,6 +8,7 @@ class.__index = class
 ---@field parts table<any, ModelPart>
 ---@field offset integer
 
+---@return FOXTailor.Mannequin
 ---@nodiscard
 local function newMannequin()
 	return setmetatable({ collections = {} }, class)
