@@ -1,11 +1,13 @@
 # Classes
+
 - Garment
+- Accessory
 - Outfit
 - Mannequin
 
 ## Garment
 
-Stores things like the textures, the masks, and the tint regions
+Stores things like the textures, and masks
 
 ```lua
 local shirt = api.newGarment("shirt", "clothes")
@@ -18,12 +20,22 @@ local pants = api.newGarment("pants", "clothes")
 pants:addMask("shirt", 0, 0, 10, 10)
 ```
 
+## Accessory
+
+Stores a parts that are made visible when worn. Attaches to mannequin group parts, not collections.
+
+```lua
+local crown = api.newAccessory("crown", "head")
+	:addPart(collections.Accessories.Crown, vec(0, 0, 0))
+```
+
 ## Outfit
 
 Builds outfits and enables customizations. Bakes everything into the textures
 
 ```lua
 local outfit = api.newOutfit({
+	crown,
 	shirt,
 	pants
 })
@@ -35,10 +47,13 @@ outfit.shirt:setColor(vectors.hexToRGB("#ff0000"))
 
 Stores the model layers to apply garments to. Only grabs the textures from the outfit and nothing else.
 
+Could probably allocate the 3rd layer and onward for outfits for simplicity.
+
 ```lua
 local mannequin = api.newMannequin()
-	:addCollection("skin", collections.Skin, 2)
-	:addCollection("clothes", collections.Clothes, 1)
+	:addGroup("head", pivots.Head)
+	:addGroup("skin", collections.Skin, 2)
+	:addGroup("clothes", collections.Clothes, 1)
 
 mannequin:applyOutfit(outfit)
 ```
