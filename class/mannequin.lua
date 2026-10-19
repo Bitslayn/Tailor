@@ -25,30 +25,31 @@ end
 ---@param outfit FOXTailor.Outfit
 ---@return self
 function class:applyOutfit(outfit)
-	-- TODO fix variable naming
-
 	local layers = {}
 
-	for _, collection in pairs(self.collections) do
+	for _, collection in next, self.collections do
 		layers[collection.name] = self.collections[collection.name].offset
 
-		for _, part in pairs(collection.parts) do
+		for _, part in next, collection.parts do
 			part:initializeLayers():renderTypeLayer(2, "TRANSLUCENT")
 		end
 	end
 
+	-- Set ModelPart textures
 	for i = #outfit.garments, 1, -1 do
-		for j = 1, #outfit.garments[i].layers do
-			local collection = outfit.garments[i].collection
+		local garment = outfit.garments[i]
+		for j = 1, #garment.layers do
+			local collection = garment.collection
 
-			for _, part in pairs(self.collections[collection].parts) do
-				part:setTextureLayer(layers[collection], "CUSTOM", outfit.garments[i].layers[j].texture)
+			for _, part in next, self.collections[collection].parts do
+				part:setTextureLayer(layers[collection], "CUSTOM", garment.layers[j].texture)
 			end
 
 			layers[collection] = layers[collection] + 1
 		end
-		outfit.garments[i]:apply(outfit.garments, i)
 	end
+
+	outfit:bakeTextures()
 
 	return self
 end
