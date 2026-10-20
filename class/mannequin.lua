@@ -6,7 +6,6 @@ class.__index = class
 ---@class FOXTailor.Mannequin.Collections
 ---@field name string
 ---@field parts table<any, ModelPart>
----@field offset integer
 
 ---@return FOXTailor.Mannequin
 ---@nodiscard
@@ -16,12 +15,15 @@ end
 
 ---@param name string
 ---@param parts table<any, ModelPart>
----@param layer_offset integer?
 ---@return self
-function class:addCollection(name, parts, layer_offset)
-	self.collections[name] = { name = name, parts = parts, offset = layer_offset or 1 }
+function class:addCollection(name, parts)
+	self.collections[name] = { name = name, parts = parts }
 	return self
 end
+
+-- TODO: Assert if an accessory targets a collection group instead of a ModelPart group
+-- TODO: Store a list of applied accessories. If an accessory was already visible before applying the outfit,
+-- that accessory should not become hidden when switching outfits.
 
 ---@param outfit FOXTailor.Outfit
 ---@return self
@@ -29,11 +31,7 @@ function class:applyOutfit(outfit)
 	local layers = {}
 
 	for _, collection in next, self.collections do
-		layers[collection.name] = self.collections[collection.name].offset
-
-		for _, part in next, collection.parts do
-			part:initializeLayers():renderTypeLayer(2, "TRANSLUCENT")
-		end
+		layers[collection.name] = 3
 	end
 
 	-- Set ModelPart textures

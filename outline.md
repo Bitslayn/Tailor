@@ -47,13 +47,11 @@ outfit.shirt:setColor(vectors.hexToRGB("#ff0000"))
 
 Stores the model layers to apply garments to. Only grabs the textures from the outfit and nothing else.
 
-Could probably allocate the 3rd layer and onward for outfits for simplicity.
-
 ```lua
 local mannequin = api.newMannequin()
 	:addGroup("head", pivots.Head)
-	:addGroup("skin", collections.Skin, 2)
-	:addGroup("clothes", collections.Clothes, 1)
+	:addGroup("skin", collections.Skin)
+	:addGroup("clothes", collections.Clothes)
 
 mannequin:applyOutfit(outfit)
 ```
