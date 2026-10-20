@@ -45,14 +45,14 @@ function class:applyOutfit(outfit)
 	end
 
 	if self.outfit then
-		for i = #self.outfit.garments, 1, -1 do
-			local garment = self.outfit.garments[i]
+		for i = #self.outfit.clothes, 1, -1 do
+			local garment = self.outfit.clothes[i]
 			garment:remove()
 		end
 	end
 
-	for i = #outfit.garments, 1, -1 do
-		local garment = outfit.garments[i]
+	for i = #outfit.clothes, 1, -1 do
+		local garment = outfit.clothes[i]
 		garment:apply(groups, layers, outfit, i)
 	end
 

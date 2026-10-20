@@ -1,5 +1,4 @@
----@class FOXTailor.Garment
----@field name string
+---@class FOXTailor.Garment: FOXTailor.Clothing
 ---@field group string
 ---@field layers FOXTailor.Garment.Layer[]
 ---@field masks FOXTailor.Garment.Mask[]
@@ -67,7 +66,7 @@ function class:applyTextures(outfit, i)
 
 	-- Queue masks
 	for j = 1, i - 1 do
-		local mask = self.masks[outfit.garments[j].name]
+		local mask = self.masks[outfit.clothes[j].name]
 		if mask then
 			for k = 1, #mask do
 				mask_queue[#mask_queue + 1] = mask[k]

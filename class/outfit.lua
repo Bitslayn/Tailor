@@ -1,13 +1,13 @@
 ---@class FOXTailor.Outfit
----@field garments FOXTailor.Garment[]
+---@field clothes FOXTailor.Clothing[]
 local class = {}
 class.__index = class
 
----@param garments FOXTailor.Garment[]
+---@param clothes FOXTailor.Clothing[]
 ---@return FOXTailor.Outfit
 ---@nodiscard
-local function newOutfit(garments)
-	return setmetatable({ garments = garments }, class)
+local function newOutfit(clothes)
+	return setmetatable({ clothes = clothes }, class)
 end
 
 -- Dev note: Customization will be handled in the outfit rather than the garment.

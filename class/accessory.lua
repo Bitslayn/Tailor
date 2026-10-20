@@ -1,5 +1,4 @@
----@class FOXTailor.Accessory
----@field name string
+---@class FOXTailor.Accessory: FOXTailor.Clothing
 ---@field group string
 ---@field parts FOXTailor.Accessory.Parts[]
 local class = {}
