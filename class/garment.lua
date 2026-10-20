@@ -1,6 +1,6 @@
 ---@class FOXTailor.Garment
 ---@field name string
----@field collection string
+---@field group string
 ---@field layers FOXTailor.Garment.Layer[]
 ---@field masks FOXTailor.Garment.Mask[]
 local class = {}
@@ -18,11 +18,11 @@ class.__index = class
 ---@class FOXTailor.Garment.Mask
 
 ---@param name string
----@param collection string
+---@param group string
 ---@return FOXTailor.Garment
 ---@nodiscard
-local function newGarment(name, collection)
-	return setmetatable({ name = name, collection = collection, layers = {}, masks = {} }, class)
+local function newGarment(name, group)
+	return setmetatable({ name = name, group = group, layers = {}, masks = {} }, class)
 end
 
 ---@param texture Texture

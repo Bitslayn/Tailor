@@ -1,23 +1,23 @@
 ---@class FOXTailor.Mannequin
----@field collections table<string, FOXTailor.Mannequin.Collections>
+---@field groups table<string, FOXTailor.Mannequin.Group>
 local class = {}
 class.__index = class
 
----@class FOXTailor.Mannequin.Collections
+---@class FOXTailor.Mannequin.Group
 ---@field name string
 ---@field parts table<any, ModelPart>
 
 ---@return FOXTailor.Mannequin
 ---@nodiscard
 local function newMannequin()
-	return setmetatable({ collections = {} }, class)
+	return setmetatable({ groups = {} }, class)
 end
 
 ---@param name string
 ---@param parts table<any, ModelPart>
 ---@return self
-function class:addCollection(name, parts)
-	self.collections[name] = { name = name, parts = parts }
+function class:addGroup(name, parts)
+	self.groups[name] = { name = name, parts = parts }
 	return self
 end
 
@@ -30,21 +30,21 @@ end
 function class:applyOutfit(outfit)
 	local layers = {}
 
-	for _, collection in next, self.collections do
-		layers[collection.name] = 3
+	for _, group in next, self.groups do
+		layers[group.name] = 3
 	end
 
 	-- Set ModelPart textures
 	for i = #outfit.garments, 1, -1 do
 		local garment = outfit.garments[i]
 		for j = 1, #garment.layers do
-			local collection = garment.collection
+			local group = garment.group
 
-			for _, part in next, self.collections[collection].parts do
-				part:setTextureLayer(layers[collection], "CUSTOM", garment.layers[j].texture)
+			for _, part in next, self.groups[group].parts do
+				part:setTextureLayer(layers[group], "CUSTOM", garment.layers[j].texture)
 			end
 
-			layers[collection] = layers[collection] + 1
+			layers[group] = layers[group] + 1
 		end
 	end
 
