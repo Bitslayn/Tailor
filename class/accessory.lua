@@ -18,10 +18,10 @@ local function newAccessory(name, group)
 end
 
 ---@param part ModelPart
----@param tint Vector3
+---@param tint Vector3?
 ---@return self
 function class:addPart(part, tint)
-	self.parts[#self.parts + 1] = { part = part, tint = tint }
+	self.parts[#self.parts + 1] = { part = part, tint = tint or vectors.vec3() }
 	return self
 end
 
