@@ -35,4 +35,10 @@ function class:apply(groups, layers, outfit, i)
 	end
 end
 
+function class:remove()
+	for j = 1, #self.parts do
+		self.parts[j].part:setVisible(false)
+	end
+end
+
 return newAccessory

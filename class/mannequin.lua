@@ -1,5 +1,6 @@
 ---@class FOXTailor.Mannequin
 ---@field groups FOXTailor.Mannequin.Groups
+---@field outfit FOXTailor.Outfit
 local class = {}
 class.__index = class
 
@@ -35,6 +36,7 @@ function class:applyOutfit(outfit)
 
 	for _, group in next, groups do
 		layers[group.name] = 3
+
 		if type(group.parts) ~= "ModelPart" then
 			for _, part in next, group.parts do
 				part:initializeLayers()
@@ -42,10 +44,19 @@ function class:applyOutfit(outfit)
 		end
 	end
 
+	if self.outfit then
+		for i = #self.outfit.garments, 1, -1 do
+			local garment = self.outfit.garments[i]
+			garment:remove()
+		end
+	end
+
 	for i = #outfit.garments, 1, -1 do
 		local garment = outfit.garments[i]
 		garment:apply(groups, layers, outfit, i)
 	end
+
+	self.outfit = outfit
 
 	return self
 end

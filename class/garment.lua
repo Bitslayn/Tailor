@@ -120,4 +120,8 @@ function class:apply(groups, layers, outfit, i)
 	self:applyTextures(outfit, i)
 end
 
+function class:remove()
+
+end
+
 return newGarment
