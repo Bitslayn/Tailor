@@ -25,4 +25,14 @@ function class:addPart(part, tint)
 	return self
 end
 
+---@param groups FOXTailor.Mannequin.Groups
+---@param layers table<string, integer>
+---@param outfit FOXTailor.Outfit
+---@param i integer
+function class:apply(groups, layers, outfit, i)
+	for j = 1, #self.parts do
+		self.parts[j].part:setVisible(true)
+	end
+end
+
 return newAccessory

@@ -59,4 +59,65 @@ function class:setColor(color)
 	return self
 end
 
+---@param outfit FOXTailor.Outfit
+---@param i integer
+function class:applyTextures(outfit, i)
+	---@type Vector4[]
+	local mask_queue = {}
+
+	-- Queue masks
+	for j = 1, i - 1 do
+		local mask = self.masks[outfit.garments[j].name]
+		if mask then
+			for k = 1, #mask do
+				mask_queue[#mask_queue + 1] = mask[k]
+			end
+		end
+	end
+
+	-- Apply textures
+	for j = 1, #self.layers do
+		local texture = self.layers[j].texture
+		texture:restore()
+
+		-- Apply masks
+		for k = 1, #mask_queue do
+			local x, y, u, v = mask_queue[k]:unpack()
+			texture:fill(x, y, u, v, 0, 0, 0, 0)
+		end
+
+		-- Apply tint
+		local tint = self.layers[j].tint
+		if tint then
+			local mat = matrices.scale4(self.color.rgb --[[@as Vector3]])
+			mat.v44 = self.color.a --[[@as number?]] or 1
+			mat = mat * tint.matrix
+
+			local x, y, u, v = tint.uv:unpack()
+
+			texture:applyMatrix(x, y, u, v, mat, true)
+		end
+
+		texture:update()
+	end
+end
+
+---@param groups FOXTailor.Mannequin.Groups
+---@param layers table<string, integer>
+---@param outfit FOXTailor.Outfit
+---@param i integer
+function class:apply(groups, layers, outfit, i)
+	for j = 1, #self.layers do
+		local group = self.group
+
+		for _, part in next, groups[group].parts do
+			part:setTextureLayer(layers[group], "CUSTOM", self.layers[j].texture)
+		end
+
+		layers[group] = layers[group] + 1
+	end
+
+	self:applyTextures(outfit, i)
+end
+
 return newGarment

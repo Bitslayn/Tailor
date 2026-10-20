@@ -1,7 +1,9 @@
 ---@class FOXTailor.Mannequin
----@field groups table<string, FOXTailor.Mannequin.Group>
+---@field groups FOXTailor.Mannequin.Groups
 local class = {}
 class.__index = class
+
+---@alias FOXTailor.Mannequin.Groups table<string, FOXTailor.Mannequin.Group>
 
 ---@class FOXTailor.Mannequin.Group
 ---@field name string
@@ -28,27 +30,22 @@ end
 ---@param outfit FOXTailor.Outfit
 ---@return self
 function class:applyOutfit(outfit)
+	local groups = self.groups
 	local layers = {}
 
-	for _, group in next, self.groups do
+	for _, group in next, groups do
 		layers[group.name] = 3
-	end
-
-	-- Set ModelPart textures
-	for i = #outfit.garments, 1, -1 do
-		local garment = outfit.garments[i]
-		for j = 1, #garment.layers do
-			local group = garment.group
-
-			for _, part in next, self.groups[group].parts do
-				part:setTextureLayer(layers[group], "CUSTOM", garment.layers[j].texture)
+		if type(group.parts) ~= "ModelPart" then
+			for _, part in next, group.parts do
+				part:initializeLayers()
 			end
-
-			layers[group] = layers[group] + 1
 		end
 	end
 
-	outfit:bakeTextures()
+	for i = #outfit.garments, 1, -1 do
+		local garment = outfit.garments[i]
+		garment:apply(groups, layers, outfit, i)
+	end
 
 	return self
 end
