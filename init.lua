@@ -1,7 +1,7 @@
 ---@class FOXTailor
 local api = {}
 
-require("scripts/libraries/PartLayers")
+require("../../PartLayers")
 
 ---@class FOXTailor.Clothing
 ---@field name string
