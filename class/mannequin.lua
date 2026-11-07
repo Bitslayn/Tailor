@@ -39,7 +39,7 @@ function class:applyOutfit(outfit)
 
 		if type(group.parts) ~= "ModelPart" then
 			for _, part in next, group.parts do
-				part:initializeLayers()
+				part:initializeLayers(3)
 			end
 		end
 	end
